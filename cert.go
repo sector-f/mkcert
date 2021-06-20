@@ -95,11 +95,7 @@ func (m *mkcert) makeCert(hosts []string) {
 		tpl.ExtKeyUsage = append(tpl.ExtKeyUsage, x509.ExtKeyUsageEmailProtection)
 	}
 
-	// IIS (the main target of PKCS #12 files), only shows the deprecated
-	// Common Name in the UI. See issue #115.
-	if m.pkcs12 {
-		tpl.Subject.CommonName = hosts[0]
-	}
+	tpl.Subject.CommonName = hosts[0]
 
 	cert, err := x509.CreateCertificate(rand.Reader, tpl, m.caCert, pub, m.caKey)
 	fatalIfErr(err, "failed to generate certificate")
